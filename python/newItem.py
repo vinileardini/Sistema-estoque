@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as ttk
 from tkinter.commondialog import Dialog
+from PIL import ImageTk,Image
 
 class newItem():
     
@@ -26,6 +27,14 @@ class newItem():
         quantityField.pack(pady=20,side=LEFT)
         quantityInput = Entry(labelQuantity,width=30)
         quantityInput.pack(pady=20)
+        labelButtons = Label(mainItem,background='#121212')
+        labelButtons.pack(pady=20)
+        imgCheck = PhotoImage(file='img\check.png')
+        displayCheck = imgCheck.subsample(25,25)
+        confirmButton = Button(labelButtons,text='Confirmar',image=displayCheck,background='#02c202',compound=LEFT)
+        confirmButton.pack()
+        
+        
         
 
 root = Tk()
