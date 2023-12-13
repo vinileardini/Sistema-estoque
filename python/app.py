@@ -12,7 +12,9 @@ class app():
         title.pack(pady=10)
         selectionMenu = Label(main)
         selectionMenu.pack()
-        buttonNewItem = Button(selectionMenu,text='Adicionar Item')
+        selectedOption = StringVar(value="Selecione uma opção")
+        options = ["Adicionar Item","Pesquisar Item","Remover Item"]
+        buttonNewItem = OptionMenu(selectionMenu,selectedOption,*options)
         buttonNewItem.pack(side=LEFT,padx=10)
         labelSearchItem = Entry(selectionMenu,width=50)
         labelSearchItem.pack(side=LEFT,padx=10)

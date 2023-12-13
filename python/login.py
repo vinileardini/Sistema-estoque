@@ -24,7 +24,7 @@ class login():
         passwordLabel = Label(mainLogin,background='#121212')
         passwordLabel.pack(pady=10)
         passwordField = Label(passwordLabel,text='Senha:',foreground='#ffffff',background='#121212')
-        passwordField.pack(side=LEFT)
+        passwordField.pack(padx=5,side=LEFT)
         passwordInput = Entry(passwordLabel,width=30)
         passwordInput.pack()
         buttonsLabel = Label(mainLogin,background='#121212')
