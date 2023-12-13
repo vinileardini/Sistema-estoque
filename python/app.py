@@ -18,7 +18,10 @@ class app():
         buttonNewItem.pack(side=LEFT,padx=10)
         labelSearchItem = Entry(selectionMenu,width=50)
         labelSearchItem.pack(side=LEFT,padx=10)
-        buttonSearchItem = Button(selectionMenu)
+        searchImage = PhotoImage(file='img/lupa.png')
+        searchImage = searchImage.subsample(10,10)
+        buttonSearchItem = Button(selectionMenu,image=searchImage)
+        buttonSearchItem.image = searchImage
         buttonSearchItem.pack(side=RIGHT,padx=10)
         
         
