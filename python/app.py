@@ -26,16 +26,28 @@ class app():
         buttonSearchItem = Button(selectionMenu,image=searchImage,background='#121212')
         buttonSearchItem.image = searchImage
         buttonSearchItem.pack(side=RIGHT,padx=10)
-        labelDisplayMenu = tk.Label(main,pady=20)
+        labelDisplayMenu = tk.Label(main,pady=20,background='#121212')
         labelDisplayMenu.pack()
-        scrollbar = tk.Scrollbar(labelDisplayMenu)
-        scrollbar.pack(side=RIGHT,fill=Y)
-        menuList = ['a','b','c']
-        menu = tk.Listbox(labelDisplayMenu,yscrollcommand=scrollbar.set)
-        menu.pack(side=LEFT)
-        for i in range(1,40):
-            menu.insert(END,str(i))
-        scrollbar.config(command=menu.yview)
+        scrollbarSide = tk.Scrollbar(labelDisplayMenu)
+        scrollbarSide.pack(side=RIGHT,fill=Y)
+        scrollbarUnder = tk.Scrollbar(labelDisplayMenu,orient=HORIZONTAL)
+        scrollbarUnder.pack(side=BOTTOM,fill=X)
+        treeStyle = ttk.Style()
+        treeStyle.theme_use('clam')
+        treeStyle.configure("Treeview",font=('Arial',12),background='#121212')
+        # Estilo para os heading da treeview
+        treeStyle.configure("Treeview.Heading",background='#b3b3b3',font=('Arial',10))
+        menu = ttk.Treeview(labelDisplayMenu,yscrollcommand=scrollbarSide.set,xscrollcommand=scrollbarUnder.set,columns=("c1","c2","c3"),show='headings')
+        menu.column("# 1",anchor=CENTER)
+        menu.heading("# 1",text="Patrimônio")
+        menu.column("# 2",anchor=CENTER)
+        menu.heading("# 2",text="Local")
+        menu.column("# 3",anchor=CENTER)
+        menu.heading("# 3",text="Equipamento")
+        menu.pack(side=LEFT,pady=20,padx=10)
+        scrollbarSide.config(command=menu.yview)
+        scrollbarUnder.config(command=menu.xview)
+        
         
         
         
