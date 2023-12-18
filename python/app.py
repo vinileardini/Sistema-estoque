@@ -7,11 +7,11 @@ class app():
     
     def __init__(self,master=None):
     
-        main = Frame(master,background='#121212')
+        main = Frame(master,background='#040f23')
         main.pack()
-        title = Label(main,text='Sistema de gerenciamento de estoque',background='#121212',foreground='#ffffff')
+        title = Label(main,text='Sistema de gerenciamento de estoque',background='#040f23',foreground='#ffffff',font=('Arial',16))
         title.pack(pady=10)
-        selectionMenu = Label(main,background='#121212')
+        selectionMenu = Label(main,background='#040f23')
         selectionMenu.pack()
         options = ["Adicionar Item","Pesquisar Item","Remover Item"]
         dropdownMenu = ttk.Combobox(selectionMenu,textvariable='Selecione uma opção',width=30)
@@ -23,10 +23,10 @@ class app():
         labelSearchItem.pack(side=LEFT,padx=10)
         searchImage = PhotoImage(file='img/lupa.png')
         searchImage = searchImage.subsample(18,18)
-        buttonSearchItem = Button(selectionMenu,image=searchImage,background='#121212')
+        buttonSearchItem = Button(selectionMenu,image=searchImage,background='#040f23')
         buttonSearchItem.image = searchImage
         buttonSearchItem.pack(side=RIGHT,padx=10)
-        labelDisplayMenu = tk.Label(main,pady=20,background='#121212')
+        labelDisplayMenu = tk.Label(main,pady=20,background='#040f23')
         labelDisplayMenu.pack()
         scrollbarSide = tk.Scrollbar(labelDisplayMenu)
         scrollbarSide.pack(side=RIGHT,fill=Y)
@@ -34,7 +34,7 @@ class app():
         scrollbarUnder.pack(side=BOTTOM,fill=X)
         treeStyle = ttk.Style()
         treeStyle.theme_use('clam')
-        treeStyle.configure("Treeview",font=('Arial',12),background='#121212')
+        treeStyle.configure("Treeview",font=('Arial',12),background='#040f23')
         # Estilo para os heading da treeview
         treeStyle.configure("Treeview.Heading",background='#b3b3b3',font=('Arial',10))
         menu = ttk.Treeview(labelDisplayMenu,yscrollcommand=scrollbarSide.set,xscrollcommand=scrollbarUnder.set,columns=("c1","c2","c3"),show='headings')
@@ -50,10 +50,9 @@ class app():
         
         
         
-        
     
 root = Tk()
-root.config(background='#121212')
+root.config(background='#040f23')
 root.minsize(300,300)
 app(root)
 root.mainloop()

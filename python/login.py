@@ -12,6 +12,7 @@ class login():
         mainLogin.pack(side=RIGHT,padx=20)
         titleLogin = Label(mainLogin,text='InovaTech Master',font=('Arial',14),foreground='#ffffff',background='#040f23')
         titleLogin.pack(pady=10)
+        
         #Inserção imagem 
         imgLogin  = Frame(master,height=400,width=250)
         imgLogin.pack(side=LEFT)
