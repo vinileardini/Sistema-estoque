@@ -63,7 +63,6 @@ class removeItem():
     def searchItem(self):
         
         item = self.itemInput.get()
-        print(item)
         
         self.itemInput.delete(0,'end')
         

@@ -44,14 +44,15 @@ class newItem():
             itemSearch = ('SELECT patrimonioItem FROM items')
             cursor.execute(itemSearch)
             result = cursor.fetchall()
+            print(result)
             
             if patrimonioItem in result:
                 messagebox.showwarning('Adição de item','Patrimônio já cadastrado')
 
             else:
-                addItem = ("INSERT INTO items (patrimonioItem,tipoItem,localItem )VALUES (%s,%s,%s)")
-                values = (f"{patrimonioItem},{nomeItem},{localItem}")
-                cursor.execute(addItem,values)
+                sql = ('INSERT INTO items(patrimonioItem,tipoItem,localItem) VALUES (%s,%s,%s)')
+                values = (patrimonioItem,nomeItem,localItem)
+                cursor.execute(sql,values)
                 
                 connection.commit()
         
@@ -60,6 +61,7 @@ class newItem():
                 self.itemInput.delete(0,'end')
                 self.patrimonioInput.delete(0,'end')
                 self.localInput.delete(0,'end')
+
         except:
             messagebox.showerror('Erro','Não foi possível adicionar o item')
             connection.rollback()
