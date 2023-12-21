@@ -3,7 +3,7 @@ import tkinter as ttk
 from tkinter.commondialog import Dialog
 from tkinter import messagebox
 from PIL import ImageTk,Image
-
+import mysql.connector
 class removeItem():
     
     def __init__(self,master=None):
@@ -12,7 +12,7 @@ class removeItem():
         mainRemoveItem.pack()
         labelItem = Label(mainRemoveItem,background='#040f23')
         labelItem.pack(pady=20)
-        itemField = Label(labelItem,text="Item:",background='#040f23',foreground='#ffffff')
+        itemField = Label(labelItem,text="ID Item:",background='#040f23',foreground='#ffffff')
         itemField.pack(pady=20,side=LEFT)
         self.itemInput = Entry(labelItem,width=30)
         self.itemInput.pack(pady=20,side=LEFT,padx=10)
@@ -37,20 +37,22 @@ class removeItem():
         labelId.pack(pady=10)
         idField =  Label(labelId,text='ID:',background='#040d23',foreground='#ffffff')
         idField.pack(side=LEFT,padx=8)
-        self.textString = StringVar()
-        self.idLabel = Entry(labelId,background='#040d23',foreground='#ffffff',state='readonly',readonlybackground='#040d23',textvariable=self.textString)
+        self.textStringID = StringVar()
+        self.textStringLocal = StringVar()
+        self.textStringItem = StringVar()
+        self.idLabel = Entry(labelId,background='#040d23',foreground='#ffffff',state='readonly',readonlybackground='#040d23',textvariable=self.textStringID)
         self.idLabel.pack(side=RIGHT)
         labelItem = Label(infoLabel,background='#040d23',foreground='#ffffff')
         labelItem.pack(pady=10)
         itemField = Label(labelItem,text='Item:',background='#040d23',foreground='#ffffff')
         itemField.pack(side=LEFT,padx=2)
-        self.itemLabel = Entry(labelItem,background='#040d23',foreground='#ffffff',state='readonly',readonlybackground='#040d23',textvariable=self.textString)
+        self.itemLabel = Entry(labelItem,background='#040d23',foreground='#ffffff',state='readonly',readonlybackground='#040d23',textvariable=self.textStringItem)
         self.itemLabel.pack(side=RIGHT)
         labelLocal = Label(infoLabel,background='#040d23',foreground='#ffffff')
         labelLocal.pack(pady=10)
         localField = Label(labelLocal,background='#040d23',foreground='#ffffff',text='Local:')
         localField.pack(side=LEFT)
-        self.localLabel = Entry(labelLocal,background='#040d23',foreground='#ffffff',state='readonly',readonlybackground='#040d23',textvariable=self.textString)
+        self.localLabel = Entry(labelLocal,background='#040d23',foreground='#ffffff',state='readonly',readonlybackground='#040d23',textvariable=self.textStringLocal)
         self.localLabel.pack(side=RIGHT)
         labelButtons = Label(infoLabel,background='#040d23',foreground='#ffffff')
         labelButtons.pack(pady=20)
@@ -59,14 +61,26 @@ class removeItem():
         cancelButton = Button(labelButtons,text='❌ Excluir',background='#eb1313',command=lambda:self.cancelRemove())
         cancelButton.pack()
         
+        self.connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
+        self.cursor = self.connection.cursor()
+        
     
     def searchItem(self):
-        
-        item = self.itemInput.get()
-        
-        self.itemInput.delete(0,'end')
-        
-        self.textString.set(item)
+        try:
+            item = self.itemInput.get()
+            
+            sqlSearch = (f'SELECT patrimonioItem,tipoItem,localItem FROM items WHERE patrimonioItem ={item}')
+            
+            self.cursor.execute(sqlSearch)
+            result = self.cursor.fetchall()
+                
+            self.textStringID.set(result[0][0])
+            self.textStringItem.set(result[0][1])
+            self.textStringLocal.set(result[0][2])
+            
+            self.itemInput.delete(0,'end')
+        except:
+            messagebox.showerror('Erro','Não existe item com essa identificação')
         
     
     def confirmRemove(self):
@@ -74,7 +88,15 @@ class removeItem():
         try:
             messagebox.showinfo('Remoção de item','O item foi removido com sucesso')
             
-            self.textString.set('')
+            sql = (f'DELETE FROM items WHERE patrimonioItem = {self.textStringID.get()}')
+            
+            self.cursor.execute(sql)
+            
+            self.connection.commit()
+            
+            self.textStringID.set('')
+            self.textStringItem.set('')
+            self.textStringLocal.set('')
     
         except:
             messagebox.showerror('Remoção de item','Não foi possível realizar a remoção do item')
@@ -88,12 +110,16 @@ class removeItem():
             self.itemInput.delete(0,'end')
             messagebox.showinfo('Remoção de item','A remoção do item foi cancelada com sucesso')
             
-            self.textString.set('')
+            self.textStringID.set('')
+            self.textStringItem.set('')
+            self.textStringLocal.set('')
     
         except:
             messagebox.showwarning('Remoção de item','Não foi possível concluir a remoção do item')
             
-            self.textString.set('')
+            self.textStringID.set('')
+            self.textStringItem.set('')
+            self.textStringLocal.set('')
     
             
         

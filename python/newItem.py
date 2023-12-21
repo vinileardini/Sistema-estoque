@@ -54,6 +54,8 @@ class newItem():
                 values = (patrimonioItem,nomeItem,localItem)
                 cursor.execute(sql,values)
                 
+                print(cursor.rowcount,'rows alterados')
+                
                 connection.commit()
         
                 messagebox.showinfo(f'Item adicionado',f'O item {self.itemInput.get()} foi adicionado com sucesso')
