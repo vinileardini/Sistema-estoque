@@ -2,7 +2,12 @@ from tkinter import *
 import tkinter as tk
 from tkinter import ttk
 from tkinter.commondialog import Dialog
+from tkinter import messagebox
 import mysql.connector
+
+connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
+cursor = connection.cursor()
+    
 
 class app():
     
@@ -15,10 +20,10 @@ class app():
         selectionMenu = Label(main,background='#040f23')
         selectionMenu.pack()
         options = ["Adicionar Item","Pesquisar Item","Remover Item"]
-        dropdownMenu = ttk.Combobox(selectionMenu,textvariable='Selecione uma opção',width=30)
+        dropdownMenu = ttk.Combobox(selectionMenu,width=30)
         dropdownMenu['values'] = options
         dropdownMenu['state'] = 'readonly'
-        dropdownMenu.set('Selecione uma opção')
+        dropdownMenu.set(options[1])
         dropdownMenu.pack(side=LEFT,padx=10)
         self.labelSearchItem = Entry(selectionMenu,width=50)
         self.labelSearchItem.pack(side=LEFT,padx=10)
@@ -57,11 +62,12 @@ class app():
         button1 = Button(text='abc',command=lambda:self.searchItem())
         button1.pack()
         
+        connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
+        self.cursor = connection.cursor()
+        
         
     def itemsMenu(self):
-        
-        connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
-        cursor = connection.cursor()
+    
         
         sql = ('SELECT patrimonioItem,tipoItem,localItem FROM items')
         
@@ -74,17 +80,54 @@ class app():
         
         
     def searchItem(self):
+       
+        try: 
         
-        result = self.menu.get_children()
-        
-        for item in result:
+            #Recebe o valor inserido no campo de entrada de pesquisa de item
             
-            self.menu.delete(item)
+            itemValue = self.labelSearchItem.get()
+            
+            #Busca no BD do patrimonio do item pesquisado
+            
+            sqlSearch = ('SELECT patrimonioItem,tipoItem,localItem FROM items WHERE patrimonioItem = %s')
+            
+            cursor.execute(sqlSearch,(itemValue,))
+            resultSearch = cursor.fetchall()
+            
+            result = self.menu.get_children()
+            
+            self.menu.insert('',0,values=(resultSearch[0][0],resultSearch[0][2],resultSearch[0][1]))
+            
+            for item in result:
+                
+                self.menu.delete(item)
         
-        itemValue = self.labelSearchItem.get()
+        except:
+            
+            messagebox.showerror('Erro','Não existe item com essa identificação')
+            
+            menuElements = self.menu.get_children()
+            
+            for item in menuElements:
+                
+                self.menu.delete(item)
+            
+            # Inseri na treeview todos os itens existentes
+            
+            cursor.execute('SELECT patrimonioItem,tipoItem,localItem from items')
+            allItems = cursor.fetchall()
+            
+            
+            for itemDisplay in allItems:
+                
+                self.menu.insert('',0,values=(itemDisplay[0],itemDisplay[2],itemDisplay[1]))
+                
+                
+            
+            
+            
+                   
         
-        print(itemValue)
-    
     #Funções para o funcionamento do placeholder na entry de pesquisa de item
     
     def excludePlaceholder(self,*args):
