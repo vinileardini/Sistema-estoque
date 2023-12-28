@@ -40,7 +40,7 @@ class login():
         passwordField.pack(padx=5,side=LEFT)
         self.passwordInput = Entry(passwordLabel,width=30,show='*')
         self.passwordInput.pack()
-        import conexaobd
+        
         
         #Botão para envio de dados de login
        

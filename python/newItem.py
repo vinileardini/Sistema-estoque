@@ -5,11 +5,17 @@ from tkinter import messagebox
 from PIL import ImageTk,Image
 import mysql.connector
 
-class newItem():
+
+class newItem(Toplevel):
     
     def __init__(self,master=None):
         
-        mainItem = Frame(master,background='#040f23')
+        newItemWindow = ttk.Toplevel()
+        newItemWindow.title('Adição de item')
+        newItemWindow.maxsize(300,400)
+        newItemWindow.minsize(300,400)
+        newItemWindow.config(background='#040f23')
+        mainItem = Frame(newItemWindow,background='#040f23')
         mainItem.pack()
         labelItem = Label(mainItem,background='#040f23')
         labelItem.pack(pady=20)
@@ -35,6 +41,7 @@ class newItem():
         confirmButton.pack(padx=10,side=LEFT)
         cancelButton = Button(labelButtons,text='❌ Excluir',background='#eb1313',command=lambda:self.cancelAdd())
         cancelButton.pack()
+        
     
     # Confirmação de adição do item
     def addNewitem(self,nomeItem,patrimonioItem,localItem):
@@ -86,13 +93,14 @@ class newItem():
     
         
 
-root = Tk()
-root.config(background='#040f23')
-root.maxsize(300,400)
-root.minsize(300,400)
-root.title('Adição de item')
-imgIcon = Image.open('img\\boxcrate.png')
-icon = ImageTk.PhotoImage(imgIcon)
-root.wm_iconphoto(FALSE,icon)
-newItem(root)
-root.mainloop()
+# root = Tk()
+# root.config(background='#040f23')
+# root.maxsize(300,400)
+# root.minsize(300,400)
+# root.title('Adição de item')
+# imgIcon = Image.open('img\\boxcrate.png')
+# icon = ImageTk.PhotoImage(imgIcon)
+# root.wm_iconphoto(FALSE,icon)
+# newItem(root)
+
+

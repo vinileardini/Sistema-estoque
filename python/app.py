@@ -4,6 +4,8 @@ from tkinter import ttk
 from tkinter.commondialog import Dialog
 from tkinter import messagebox
 import mysql.connector
+from newItem import newItem
+from removeItem import removeItem
 
 connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
 cursor = connection.cursor()
@@ -20,11 +22,11 @@ class app():
         selectionMenu = Label(main,background='#040f23')
         selectionMenu.pack()
         options = ["Adicionar Item","Pesquisar Item","Remover Item"]
-        dropdownMenu = ttk.Combobox(selectionMenu,width=30)
-        dropdownMenu['values'] = options
-        dropdownMenu['state'] = 'readonly'
-        dropdownMenu.set(options[1])
-        dropdownMenu.pack(side=LEFT,padx=10)
+        self.dropdownMenu = ttk.Combobox(selectionMenu,width=30)
+        self.dropdownMenu['values'] = options
+        self.dropdownMenu['state'] = 'readonly'
+        self.dropdownMenu.set(options[1])
+        self.dropdownMenu.pack(side=LEFT,padx=10)
         self.labelSearchItem = Entry(selectionMenu,width=50)
         self.labelSearchItem.pack(side=LEFT,padx=10)
         self.labelSearchItem.insert(0,'Insira o patrimônio do item a ser pesquisado:')
@@ -57,12 +59,12 @@ class app():
         self.menu.pack(side=LEFT,pady=20,padx=10)
         scrollbarSide.config(command=self.menu.yview)
         scrollbarUnder.config(command=self.menu.xview)
-        buttonteste = Button(text='teste',command=self.itemsMenu())
+        buttonteste = Button(text='teste',command=lambda:self.optionSelected())
         buttonteste.pack()
         button1 = Button(text='abc',command=lambda:self.searchItem())
         button1.pack()
         
-        connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
+        connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
         self.cursor = connection.cursor()
         
         
@@ -125,8 +127,24 @@ class app():
                 
             
             
+    def optionSelected(self):
+        
+        option = self.dropdownMenu.get()
+        
+        options = ["Adicionar Item","Pesquisar Item","Remover Item"]
+        
+        if option == options[0]:
             
-                   
+            newItem()
+        
+        elif option == options[1]:
+            
+            pass
+        
+        else:
+            
+            removeItem()
+        
         
     #Funções para o funcionamento do placeholder na entry de pesquisa de item
     
@@ -153,8 +171,7 @@ class app():
         
         
         
-        
-    
+
 root = Tk()
 root.config(background='#040f23')
 root.minsize(300,300)

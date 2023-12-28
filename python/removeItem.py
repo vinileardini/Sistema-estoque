@@ -4,11 +4,16 @@ from tkinter.commondialog import Dialog
 from tkinter import messagebox
 from PIL import ImageTk,Image
 import mysql.connector
-class removeItem():
+class removeItem(Toplevel):
     
     def __init__(self,master=None):
         
-        mainRemoveItem = Frame(master,background='#040f23')
+        removeItemWindow = ttk.Toplevel()
+        removeItemWindow.title('Remoção de item')
+        removeItemWindow.maxsize(300,500)
+        removeItemWindow.minsize(300,500)
+        removeItemWindow.config(background='#040f23')
+        mainRemoveItem = Frame(removeItemWindow,background='#040f23')
         mainRemoveItem.pack()
         labelItem = Label(mainRemoveItem,background='#040f23')
         labelItem.pack(pady=20)
@@ -132,14 +137,14 @@ class removeItem():
         
         
 
-root = Tk()
-root.config(background='#040f23')
-root.maxsize(300,500)
-root.minsize(300,500)
-root.title('Remoção de item')
-imgIcon = Image.open('img\\boxcrate.png')
-icon = ImageTk.PhotoImage(imgIcon)
-root.wm_iconphoto(FALSE,icon)
-removeItem(root)
-root.mainloop()
+# root = Tk()
+# root.config(background='#040f23')
+# root.maxsize(300,500)
+# root.minsize(300,500)
+# root.title('Remoção de item')
+# imgIcon = Image.open('img\\boxcrate.png')
+# icon = ImageTk.PhotoImage(imgIcon)
+# root.wm_iconphoto(FALSE,icon)
+# removeItem(root)
+# root.mainloop()
         
