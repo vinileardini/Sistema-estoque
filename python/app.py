@@ -4,10 +4,14 @@ from tkinter import ttk
 from tkinter.commondialog import Dialog
 from tkinter import messagebox
 import mysql.connector
+from PIL import ImageTk,Image
+
+#Conexões do app
 from newItem import newItem
 from removeItem import removeItem
 
-connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
+
+connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
 cursor = connection.cursor()
     
 
@@ -27,6 +31,7 @@ class app():
         self.dropdownMenu['state'] = 'readonly'
         self.dropdownMenu.set(options[1])
         self.dropdownMenu.pack(side=LEFT,padx=10)
+        self.dropdownMenu.bind('<<ComboboxSelected>>',self.optionSelected)
         self.labelSearchItem = Entry(selectionMenu,width=50)
         self.labelSearchItem.pack(side=LEFT,padx=10)
         self.labelSearchItem.insert(0,'Insira o patrimônio do item a ser pesquisado:')
@@ -34,7 +39,7 @@ class app():
         self.labelSearchItem.bind('<Leave>',self.insertPlaceholder)
         searchImage = PhotoImage(file='img/lupa.png')
         searchImage = searchImage.subsample(18,18)
-        buttonSearchItem = Button(selectionMenu,image=searchImage,background='#040f23')
+        buttonSearchItem = Button(selectionMenu,image=searchImage,background='#040f23',command=lambda:self.searchItem())
         buttonSearchItem.image = searchImage
         buttonSearchItem.pack(side=RIGHT,padx=10)
         labelDisplayMenu = tk.Label(main,pady=20,background='#040f23')
@@ -59,13 +64,12 @@ class app():
         self.menu.pack(side=LEFT,pady=20,padx=10)
         scrollbarSide.config(command=self.menu.yview)
         scrollbarUnder.config(command=self.menu.xview)
-        buttonteste = Button(text='teste',command=lambda:self.optionSelected())
-        buttonteste.pack()
-        button1 = Button(text='abc',command=lambda:self.searchItem())
-        button1.pack()
+    
         
-        connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
+        connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
         self.cursor = connection.cursor()
+        
+        self.itemsMenu()
         
         
     def itemsMenu(self):
@@ -127,7 +131,7 @@ class app():
                 
             
             
-    def optionSelected(self):
+    def optionSelected(self,event):
         
         option = self.dropdownMenu.get()
         
@@ -161,19 +165,21 @@ class app():
             self.labelSearchItem.insert(0,'Insira o patrimônio do item a ser buscado:')
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
+        
+        
+        
+        
+        
 root = Tk()
 root.config(background='#040f23')
+root.title('Sistema de gerenciamento de estoque')
+root.maxsize(800,800)
 root.minsize(300,300)
+imgOpen = Image.open('img\logo.jpg')
+imgOpen = imgOpen.resize((300,300))
+img = ImageTk.PhotoImage(imgOpen)
+root.wm_iconphoto(FALSE,img)
 app(root)
 root.mainloop()
+

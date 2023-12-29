@@ -10,6 +10,9 @@ class removeItem(Toplevel):
         
         removeItemWindow = ttk.Toplevel()
         removeItemWindow.title('Remoção de item')
+        imgIcon = Image.open('img\\PC.png')
+        icon = ImageTk.PhotoImage(imgIcon)
+        removeItemWindow.wm_iconphoto(FALSE,icon)
         removeItemWindow.maxsize(300,500)
         removeItemWindow.minsize(300,500)
         removeItemWindow.config(background='#040f23')
@@ -66,7 +69,7 @@ class removeItem(Toplevel):
         cancelButton = Button(labelButtons,text='❌ Excluir',background='#eb1313',command=lambda:self.cancelRemove())
         cancelButton.pack()
         
-        self.connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
+        self.connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
         self.cursor = self.connection.cursor()
         
     
@@ -137,14 +140,3 @@ class removeItem(Toplevel):
         
         
 
-# root = Tk()
-# root.config(background='#040f23')
-# root.maxsize(300,500)
-# root.minsize(300,500)
-# root.title('Remoção de item')
-# imgIcon = Image.open('img\\boxcrate.png')
-# icon = ImageTk.PhotoImage(imgIcon)
-# root.wm_iconphoto(FALSE,icon)
-# removeItem(root)
-# root.mainloop()
-        

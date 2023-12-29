@@ -11,6 +11,9 @@ class newItem(Toplevel):
     def __init__(self,master=None):
         
         newItemWindow = ttk.Toplevel()
+        imgIcon = Image.open('img\\PC.png')
+        icon = ImageTk.PhotoImage(imgIcon)
+        newItemWindow.wm_iconphoto(False,icon)
         newItemWindow.title('Adição de item')
         newItemWindow.maxsize(300,400)
         newItemWindow.minsize(300,400)
@@ -46,7 +49,7 @@ class newItem(Toplevel):
     # Confirmação de adição do item
     def addNewitem(self,nomeItem,patrimonioItem,localItem):
         try:
-            connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
+            connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
             cursor = connection.cursor()
             itemSearch = ('SELECT patrimonioItem FROM items')
             cursor.execute(itemSearch)
@@ -92,15 +95,5 @@ class newItem(Toplevel):
             
     
         
-
-# root = Tk()
-# root.config(background='#040f23')
-# root.maxsize(300,400)
-# root.minsize(300,400)
-# root.title('Adição de item')
-# imgIcon = Image.open('img\\boxcrate.png')
-# icon = ImageTk.PhotoImage(imgIcon)
-# root.wm_iconphoto(FALSE,icon)
-# newItem(root)
 
 
