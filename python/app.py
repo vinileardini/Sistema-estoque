@@ -11,7 +11,7 @@ from newItem import newItem
 from removeItem import removeItem
 
 
-connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
+connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
 cursor = connection.cursor()
     
 
@@ -66,7 +66,7 @@ class app():
         scrollbarUnder.config(command=self.menu.xview)
     
         
-        connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
+        connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
         self.cursor = connection.cursor()
         
         self.itemsMenu()
