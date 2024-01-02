@@ -4,6 +4,7 @@ from tkinter.commondialog import Dialog
 from tkinter import messagebox
 from PIL import ImageTk,Image
 import mysql.connector
+import conexaobd
 class removeItem(Toplevel):
     
     def __init__(self,master=None):
@@ -71,6 +72,7 @@ class removeItem(Toplevel):
         
         self.connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
         self.cursor = self.connection.cursor()
+        
         
     
     def searchItem(self):

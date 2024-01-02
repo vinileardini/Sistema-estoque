@@ -1,3 +1,4 @@
+
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
@@ -20,20 +21,20 @@ class app():
     def __init__(self,master=None):
     
         main = Frame(master,background='#040f23')
-        main.pack()
+        main.grid(row=0, column=0)
         title = Label(main,text='Sistema de gerenciamento de estoque',background='#040f23',foreground='#ffffff',font=('Arial',16))
-        title.pack(pady=10)
+        title.grid(column=0,row=0)
         selectionMenu = Label(main,background='#040f23')
-        selectionMenu.pack()
+        selectionMenu.grid(column=0,row=1)
         options = ["Adicionar Item","Pesquisar Item","Remover Item"]
         self.dropdownMenu = ttk.Combobox(selectionMenu,width=30)
         self.dropdownMenu['values'] = options
         self.dropdownMenu['state'] = 'readonly'
         self.dropdownMenu.set(options[1])
-        self.dropdownMenu.pack(side=LEFT,padx=10)
+        self.dropdownMenu.grid(column=0,row=1)
         self.dropdownMenu.bind('<<ComboboxSelected>>',self.optionSelected)
         self.labelSearchItem = Entry(selectionMenu,width=50)
-        self.labelSearchItem.pack(side=LEFT,padx=10)
+        self.labelSearchItem.grid(column=1,row=1,padx=10)
         self.labelSearchItem.insert(0,'Insira o patrimônio do item a ser pesquisado:')
         self.labelSearchItem.bind('<Button-1>',self.excludePlaceholder)
         self.labelSearchItem.bind('<Leave>',self.insertPlaceholder)
@@ -41,29 +42,28 @@ class app():
         searchImage = searchImage.subsample(18,18)
         buttonSearchItem = Button(selectionMenu,image=searchImage,background='#040f23',command=lambda:self.searchItem())
         buttonSearchItem.image = searchImage
-        buttonSearchItem.pack(side=RIGHT,padx=10)
-        labelDisplayMenu = tk.Label(main,pady=20,background='#040f23')
-        labelDisplayMenu.pack()
+        buttonSearchItem.grid(column=2,row=1)
+        labelDisplayMenu = tk.Label(main,pady=20,background='white')
+        labelDisplayMenu.grid(column=0,row=2,sticky='nsew')
         scrollbarSide = tk.Scrollbar(labelDisplayMenu)
-        scrollbarSide.pack(side=RIGHT,fill=Y)
-        scrollbarUnder = tk.Scrollbar(labelDisplayMenu,orient=HORIZONTAL,background='#040f23')
-        scrollbarUnder.pack(side=BOTTOM,fill=X)
+        scrollbarSide.grid(column=1,row=2,sticky='ns',pady=10)
        
         #Treeview style
         treeBodyStyle = ttk.Style()
         treeBodyStyle.theme_use('clam')
         treeBodyStyle.configure("body.Treeview",font=('Arial',12),background='#040f23',foreground='#ffffff',fieldbackground='#040f23')
         treeBodyStyle.configure("Treeview.Heading",background='#b3b3b3',font=('Arial',10))
-        self.menu = ttk.Treeview(labelDisplayMenu,yscrollcommand=scrollbarSide.set,xscrollcommand=scrollbarUnder.set,columns=("c1","c2","c3"),show='headings',style="body.Treeview")
+        self.menu = ttk.Treeview(labelDisplayMenu,yscrollcommand=scrollbarSide.set,columns=("c1","c2","c3"),show='headings',style="body.Treeview")
         self.menu.column("# 1",anchor=CENTER)
         self.menu.heading("# 1",text="Patrimônio")
         self.menu.column("# 2",anchor=CENTER)
         self.menu.heading("# 2",text="Local")
         self.menu.column("# 3",anchor=CENTER)
         self.menu.heading("# 3",text="Equipamento")
-        self.menu.pack(side=LEFT,pady=20,padx=10)
+        self.menu.grid(column=0,row=2,sticky='nsew')
+        self.menu.config(yscrollcommand=scrollbarSide.set)
         scrollbarSide.config(command=self.menu.yview)
-        scrollbarUnder.config(command=self.menu.xview)
+       
     
         
         connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
@@ -165,7 +165,9 @@ class app():
             self.labelSearchItem.insert(0,'Insira o patrimônio do item a ser buscado:')
         
         
-
+def windowSize(event):
+    print(f'O tamanho da janela é:`{event.width} x {event.height}')
+    print('------------------')
         
         
         
@@ -174,6 +176,7 @@ class app():
 root = Tk()
 root.config(background='#040f23')
 root.title('Sistema de gerenciamento de estoque')
+root.bind('<Configure>',windowSize)
 root.maxsize(800,800)
 root.minsize(300,300)
 imgOpen = Image.open('img\logo.jpg')

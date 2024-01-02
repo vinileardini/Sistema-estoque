@@ -10,15 +10,15 @@ class newItem(Toplevel):
     
     def __init__(self,master=None):
         
-        newItemWindow = ttk.Toplevel()
+        self.newItemWindow = ttk.Toplevel()
         imgIcon = Image.open('img\\PC.png')
         icon = ImageTk.PhotoImage(imgIcon)
-        newItemWindow.wm_iconphoto(False,icon)
-        newItemWindow.title('Adição de item')
-        newItemWindow.maxsize(300,400)
-        newItemWindow.minsize(300,400)
-        newItemWindow.config(background='#040f23')
-        mainItem = Frame(newItemWindow,background='#040f23')
+        self.newItemWindow.wm_iconphoto(False,icon)
+        self.newItemWindow.title('Adição de item')
+        self.newItemWindow.maxsize(300,400)
+        self.newItemWindow.minsize(300,400)
+        self.newItemWindow.config(background='#040f23')
+        mainItem = Frame(self.newItemWindow,background='#040f23')
         mainItem.pack()
         labelItem = Label(mainItem,background='#040f23')
         labelItem.pack(pady=20)
@@ -58,6 +58,8 @@ class newItem(Toplevel):
             
             if patrimonioItem in result:
                 messagebox.showwarning('Adição de item','Patrimônio já cadastrado')
+                
+                self.newItemWindow.destroy()
 
             else:
                 sql = ('INSERT INTO items(patrimonioItem,tipoItem,localItem) VALUES (%s,%s,%s)')
