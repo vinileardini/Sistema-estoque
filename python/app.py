@@ -19,12 +19,14 @@ cursor = connection.cursor()
 class app():
     
     def __init__(self,master=None):
+        
+        self.root = root
     
-        main = Frame(master,background='#040f23')
-        main.grid(row=0, column=0)
-        title = Label(main,text='Sistema de gerenciamento de estoque',background='#040f23',foreground='#ffffff',font=('Arial',16))
-        title.grid(column=0,row=0)
-        selectionMenu = Label(main,background='#040f23')
+        self.main = Frame(master,background='green')
+        self.main.grid(row=0, column=0,sticky='nsew')
+        self.title = Label(self.main,text='Sistema de gerenciamento de estoque',background='#040f23',foreground='#ffffff',font=('Arial',16))
+        self.title.grid(column=0,row=0,sticky='ew')
+        selectionMenu = Label(self.main,background='#040f23')
         selectionMenu.grid(column=0,row=1)
         options = ["Adicionar Item","Pesquisar Item","Remover Item"]
         self.dropdownMenu = ttk.Combobox(selectionMenu,width=30)
@@ -43,9 +45,9 @@ class app():
         buttonSearchItem = Button(selectionMenu,image=searchImage,background='#040f23',command=lambda:self.searchItem())
         buttonSearchItem.image = searchImage
         buttonSearchItem.grid(column=2,row=1)
-        labelDisplayMenu = tk.Label(main,pady=20,background='white')
-        labelDisplayMenu.grid(column=0,row=2,sticky='nsew')
-        scrollbarSide = tk.Scrollbar(labelDisplayMenu)
+        self.labelDisplayMenu = tk.Label(self.main,pady=20,background='white',name='labelmenu')
+        self.labelDisplayMenu.grid(column=0,row=2,sticky='nsew')
+        scrollbarSide = tk.Scrollbar(self.labelDisplayMenu)
         scrollbarSide.grid(column=1,row=2,sticky='ns',pady=10)
        
         #Treeview style
@@ -53,7 +55,7 @@ class app():
         treeBodyStyle.theme_use('clam')
         treeBodyStyle.configure("body.Treeview",font=('Arial',12),background='#040f23',foreground='#ffffff',fieldbackground='#040f23')
         treeBodyStyle.configure("Treeview.Heading",background='#b3b3b3',font=('Arial',10))
-        self.menu = ttk.Treeview(labelDisplayMenu,yscrollcommand=scrollbarSide.set,columns=("c1","c2","c3"),show='headings',style="body.Treeview")
+        self.menu = ttk.Treeview(self.labelDisplayMenu,yscrollcommand=scrollbarSide.set,columns=("c1","c2","c3"),show='headings',style="body.Treeview",name='tree')
         self.menu.column("# 1",anchor=CENTER)
         self.menu.heading("# 1",text="Patrimônio")
         self.menu.column("# 2",anchor=CENTER)
@@ -71,6 +73,7 @@ class app():
         
         self.itemsMenu()
         
+        self.root.bind('<Configure>',self.windowSize)
         
     def itemsMenu(self):
     
@@ -165,18 +168,33 @@ class app():
             self.labelSearchItem.insert(0,'Insira o patrimônio do item a ser buscado:')
         
         
-def windowSize(event):
-    print(f'O tamanho da janela é:`{event.width} x {event.height}')
-    print('------------------')
+    def windowSize(self,event):
+        
+        self.main.config(width=event.width, height=event.height)
+        
+        root.grid_columnconfigure(0, weight=1)
+        root.grid_rowconfigure(0, weight=1)
         
         
         
+        
+
+       
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
         
         
 root = Tk()
 root.config(background='#040f23')
 root.title('Sistema de gerenciamento de estoque')
-root.bind('<Configure>',windowSize)
 root.maxsize(800,800)
 root.minsize(300,300)
 imgOpen = Image.open('img\logo.jpg')
@@ -185,4 +203,7 @@ img = ImageTk.PhotoImage(imgOpen)
 root.wm_iconphoto(FALSE,img)
 app(root)
 root.mainloop()
+        
+        
+
 
