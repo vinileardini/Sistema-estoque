@@ -49,7 +49,7 @@ class newItem(Toplevel):
     # Confirmação de adição do item
     def addNewitem(self,nomeItem,patrimonioItem,localItem):
         try:
-            connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
+            connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
             cursor = connection.cursor()
             itemSearch = ('SELECT patrimonioItem FROM items')
             cursor.execute(itemSearch)
