@@ -194,7 +194,7 @@ class app():
 root = Tk()
 root.config(background='#040f23')
 root.title('Sistema de gerenciamento de estoque')
-root.maxsize(800,800)
+root.maxsize(700,800)
 root.geometry('600x300')
 root.minsize(300,300)
 imgOpen = Image.open('img\logo.jpg')
