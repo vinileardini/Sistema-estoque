@@ -4,6 +4,7 @@ from tkinter.commondialog import Dialog
 from tkinter import messagebox
 from PIL import ImageTk,Image
 import mysql.connector
+from conexaobd import connectionDB
 
 
 class newItem(Toplevel):
@@ -49,12 +50,16 @@ class newItem(Toplevel):
     # Confirmação de adição do item
     def addNewitem(self,nomeItem,patrimonioItem,localItem):
         try:
-            connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
-            cursor = connection.cursor()
+            
+            connection = connectionDB('estoque','')
+            connection.connectDB()
+            
+            #connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
+            cursor = connection.getCursor()
             itemSearch = ('SELECT patrimonioItem FROM items')
-            cursor.execute(itemSearch)
-            result = cursor.fetchall()
-            print(result)
+            connection.cursor.execute(itemSearch)
+            result = connection.cursor.fetchall()
+            print(f'Resultado:{result}')
             
             if patrimonioItem in result:
                 messagebox.showwarning('Adição de item','Patrimônio já cadastrado')
@@ -64,13 +69,15 @@ class newItem(Toplevel):
             else:
                 sql = ('INSERT INTO items(patrimonioItem,tipoItem,localItem) VALUES (%s,%s,%s)')
                 values = (patrimonioItem,nomeItem,localItem)
-                cursor.execute(sql,values)
+                connection.cursor.execute(sql,values)
                 
-                print(cursor.rowcount,'rows alterados')
+                connection.commitBD()
                 
-                connection.commit()
-        
-                messagebox.showinfo(f'Item adicionado',f'O item {self.itemInput.get()} foi adicionado com sucesso')
+                if connection.commitBD() == True:
+                
+                    print(connection.cursor.rowcount,'rows alterados')
+                    messagebox.showinfo(f'Item adicionado',f'O item {self.itemInput.get()} foi adicionado com sucesso')
+                
                 # Deleta as informações nos entrys
                 self.itemInput.delete(0,'end')
                 self.patrimonioInput.delete(0,'end')
@@ -78,7 +85,7 @@ class newItem(Toplevel):
 
         except:
             messagebox.showerror('Erro','Não foi possível adicionar o item')
-            connection.rollback()
+            
             self.itemInput.delete(0,'end')
             self.patrimonioInput.delete(0,'end')
             self.localInput.delete(0,'end')

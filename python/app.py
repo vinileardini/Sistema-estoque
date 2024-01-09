@@ -10,11 +10,12 @@ from PIL import ImageTk,Image
 #Conexões do app
 from newItem import newItem
 from removeItem import removeItem
+from conexaobd import connectionDB
 
 
-connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
-cursor = connection.cursor()
-    
+connection = connectionDB('estoque','')
+connection.connectDB()
+
 
 class app():
     
@@ -80,8 +81,8 @@ class app():
        
     
         
-        connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
-        self.cursor = connection.cursor()
+        #connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
+        #self.cursor = connection.cursor()
         
         self.itemsMenu()
         
@@ -93,8 +94,12 @@ class app():
         
         sql = ('SELECT patrimonioItem,tipoItem,localItem FROM items')
         
-        cursor.execute(sql)
-        result = cursor.fetchall()
+        #connection.cursor.execute(sql)
+        
+        connection.consultBD(sql)
+        result = connection.result
+        
+        #result = connection.cursor.fetchall()
         
         for item in result:
             
@@ -113,8 +118,10 @@ class app():
             
             sqlSearch = ('SELECT patrimonioItem,tipoItem,localItem FROM items WHERE patrimonioItem = %s')
             
-            cursor.execute(sqlSearch,(itemValue,))
-            resultSearch = cursor.fetchall()
+            connection.cursor.execute(sqlSearch,itemValue)
+            resultSearch = connection.cursor.fetchall()
+            
+            print(resultSearch)
             
             result = self.menu.get_children()
             
@@ -136,8 +143,8 @@ class app():
             
             # Inseri na treeview todos os itens existentes
             
-            cursor.execute('SELECT patrimonioItem,tipoItem,localItem from items')
-            allItems = cursor.fetchall()
+            connection.cursor.execute('SELECT patrimonioItem,tipoItem,localItem from items')
+            allItems = connection.cursor.fetchall()
             
             
             for itemDisplay in allItems:

@@ -53,7 +53,7 @@ class login():
     def loginUser(self,nome,senha):
         
         try:
-            connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
+            connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
             cursor = connection.cursor()
             userBD = ('SELECT loginUser,passwordUser FROM users')
             cursor.execute(userBD)

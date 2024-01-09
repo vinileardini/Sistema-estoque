@@ -70,7 +70,7 @@ class removeItem(Toplevel):
         cancelButton = Button(labelButtons,text='❌ Excluir',background='#eb1313',command=lambda:self.cancelRemove())
         cancelButton.pack()
         
-        self.connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
+        self.connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
         self.cursor = self.connection.cursor()
         
         
