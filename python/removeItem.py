@@ -4,7 +4,7 @@ from tkinter.commondialog import Dialog
 from tkinter import messagebox
 from PIL import ImageTk,Image
 import mysql.connector
-import conexaobd
+from conexaobd import connectionDB
 class removeItem(Toplevel):
     
     def __init__(self,master=None):
@@ -70,8 +70,8 @@ class removeItem(Toplevel):
         cancelButton = Button(labelButtons,text='❌ Excluir',background='#eb1313',command=lambda:self.cancelRemove())
         cancelButton.pack()
         
-        self.connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
-        self.cursor = self.connection.cursor()
+        self.connection = connectionDB('estoque','')
+        self.connection.connectDB()
         
         
     
@@ -81,8 +81,8 @@ class removeItem(Toplevel):
             
             sqlSearch = (f'SELECT patrimonioItem,tipoItem,localItem FROM items WHERE patrimonioItem ={item}')
             
-            self.cursor.execute(sqlSearch)
-            result = self.cursor.fetchall()
+            self.connection.cursor.execute(sqlSearch)
+            result = self.connection.cursor.fetchall()
                 
             self.textStringID.set(result[0][0])
             self.textStringItem.set(result[0][1])
@@ -98,11 +98,11 @@ class removeItem(Toplevel):
         try:
             messagebox.showinfo('Remoção de item','O item foi removido com sucesso')
             
-            sql = (f'DELETE FROM items WHERE patrimonioItem = {self.textStringID.get()}')
+            sql = ('DELETE FROM items WHERE patrimonioItem = %s')
+      
+            self.connection.cursor.execute(sql,(self.textStringID.get(),))
             
-            self.cursor.execute(sql)
-            
-            self.connection.commit()
+            self.connection.commitBD()
             
             self.textStringID.set('')
             self.textStringItem.set('')
@@ -111,7 +111,11 @@ class removeItem(Toplevel):
         except:
             messagebox.showerror('Remoção de item','Não foi possível realizar a remoção do item')
             
-            self.textString.set('')
+            self.textStringID.set('')
+            self.textStringItem.set('')
+            self.textStringLocal.set('')
+            
+           
         
     
     def cancelRemove(self):

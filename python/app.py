@@ -99,8 +99,6 @@ class app():
         connection.consultBD(sql)
         result = connection.result
         
-        #result = connection.cursor.fetchall()
-        
         for item in result:
             
             self.menu.insert('',0,values=(item[0],item[2],item[1]))

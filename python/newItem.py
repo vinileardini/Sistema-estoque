@@ -54,7 +54,7 @@ class newItem(Toplevel):
             connection = connectionDB('estoque','')
             connection.connectDB()
             
-            #connection = mysql.connector.connect(host='localhost',user='root',password='Vini@_2003',database='estoque')
+            #connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
             cursor = connection.getCursor()
             itemSearch = ('SELECT patrimonioItem FROM items')
             connection.cursor.execute(itemSearch)
