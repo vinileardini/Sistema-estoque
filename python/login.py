@@ -5,7 +5,7 @@ from PIL import ImageTk,Image
 import awesometkinter as atk
 from tkinter import messagebox
 import mysql.connector
-import conexaobd
+from conexaobd import connectionDB
 class login():
     
     def __init__(self,master=None):
@@ -50,27 +50,26 @@ class login():
         submitButton.pack(fill=BOTH)
         submitButton.bind("<Button-1>",lambda e:self.loginUser(self.nameInput.get(),self.passwordInput.get()))
         
+        self.userSigned = False
+        
     def loginUser(self,nome,senha):
         
         try:
-            connection = mysql.connector.connect(host='localhost',user='root',password='',database='estoque')
-            cursor = connection.cursor()
-            userBD = ('SELECT loginUser,passwordUser FROM users')
-            cursor.execute(userBD)
-            result = cursor.fetchall()
             
-            usuarioLogado = FALSE
+            connection = connectionDB('estoque','')
+            connection.connectDB()
             
-            for user in result: 
-                
-                #Verifica o nome de usuário
-                if nome == user[0]:
-                    #Verifica a senha do usuário
-                    if senha == user[1]:
+            userBD = ('SELECT loginUser,passwordUser FROM users WHERE loginUser = %s AND passwordUser = %s')
+            connection.cursor.execute(userBD,(nome,senha,))
+            result = connection.cursor.fetchall()
+            
+            print(result)
+            
+            if len(result) > 0:
                         
-                        usuarioLogado = TRUE
+                self.userSigned = TRUE
                     
-            if usuarioLogado == TRUE:
+            if self.userSigned == TRUE:
                 print('Usuário logado')
                 root.destroy()
                 
@@ -80,6 +79,12 @@ class login():
         except:
             
             print('Não foi possível verificar o login')
+    
+    #Retorno para verificação se o usuário conseguiu ou não logar no app
+    
+    def signedOrNot(self):
+        
+        return self.userSigned
             
 
 root = Tk()
