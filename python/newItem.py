@@ -51,7 +51,7 @@ class newItem(Toplevel):
     def addNewitem(self,nomeItem,patrimonioItem,localItem):
         try:
             
-            connection = connectionDB('estoque','Vini@_2003')
+            connection = connectionDB('estoque','')
             connection.connectDB()
             
             itemSearch = ('SELECT patrimonioItem FROM items')

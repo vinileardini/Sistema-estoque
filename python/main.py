@@ -1,3 +1,5 @@
-import app
+
+import login as app
+
 
 app

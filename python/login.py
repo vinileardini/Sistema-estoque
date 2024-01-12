@@ -6,10 +6,14 @@ import awesometkinter as atk
 from tkinter import messagebox
 import mysql.connector
 from conexaobd import connectionDB
-from menu import menu
+import menu
+
 class login():
     
     def __init__(self,master=None):
+        
+        self.master = master
+        self.userSigned = False
         
         mainLogin = Frame(master,background='#040f23')
         mainLogin.pack(side=RIGHT,padx=20)
@@ -44,20 +48,18 @@ class login():
         
         
         #Botão para envio de dados de login
-       
-        buttonsLabel = Label(mainLogin,background='#040f23')
-        buttonsLabel.pack(pady=20)
-        submitButton = atk.Button3d(buttonsLabel,text='Login',bg='#121212')
-        submitButton.pack(fill=BOTH)
-        submitButton.bind("<Button-1>",lambda e:self.loginUser(self.nameInput.get(),self.passwordInput.get()))
         
-        self.userSigned = False
+        buttonsLabel = Frame(mainLogin, background='#040f23')  # Use Frame instead of Label
+        buttonsLabel.pack(pady=20)
+
+        submitButton = atk.Button3d(buttonsLabel, text='Login', bg='#121212', command=lambda: self.loginUser(self.nameInput.get(), self.passwordInput.get()))
+        submitButton.pack(fill=BOTH)
         
     def loginUser(self,nome,senha):
         
         try:
             
-            connection = connectionDB('estoque','Vini@_2003')
+            connection = connectionDB('estoque','')
             connection.connectDB()
             
             userBD = ('SELECT loginUser,passwordUser FROM users WHERE loginUser = %s AND passwordUser = %s')
@@ -65,14 +67,16 @@ class login():
             result = connection.cursor.fetchall()
             
             print(result)
+            print(len(result))
             
             if len(result) > 0:
                         
                 self.userSigned = True
-                    
-            if self.userSigned == True:
                 print('Usuário logado')
-                root.destroy()
+                self.master.destroy()
+                self.execMenu()
+                
+                
                 
             else:
                 messagebox.showerror('Login','Usuário ou senha incorreta')
@@ -85,8 +89,26 @@ class login():
     
     def signedOrNot(self):
         
-        print('A:',self.userSigned)
         return self.userSigned
+    
+    # Função que altera o root para o menu e o executa
+    
+    def execMenu(self):
+        
+        root_menu = Tk()
+        root_menu.config(background='#040f23')
+        root_menu.title('Sistema de gerenciamento de estoque')
+        root_menu.maxsize(700,800)
+        root_menu.geometry('600x300')
+        root_menu.minsize(300,300)
+        imgOpen = Image.open('img\logo.jpg')
+        imgOpen = imgOpen.resize((300,300))
+        img = ImageTk.PhotoImage(imgOpen)
+        root_menu.wm_iconphoto(FALSE,img)
+
+        menu.menu(root_menu)
+        root_menu.mainloop()
+    
             
 
 root = Tk()

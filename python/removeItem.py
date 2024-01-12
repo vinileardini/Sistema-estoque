@@ -70,7 +70,7 @@ class removeItem(Toplevel):
         cancelButton = Button(labelButtons,text='❌ Excluir',background='#eb1313',command=lambda:self.cancelRemove())
         cancelButton.pack()
         
-        self.connection = connectionDB('estoque','Vini@_2003')
+        self.connection = connectionDB('estoque','')
         self.connection.connectDB()
         
         

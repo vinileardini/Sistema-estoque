@@ -13,7 +13,7 @@ from removeItem import removeItem
 from conexaobd import connectionDB
 
 
-connection = connectionDB('estoque','Vini@_2003')
+connection = connectionDB('estoque','')
 connection.connectDB()
 
 
@@ -21,7 +21,7 @@ class menu():
     
     def __init__(self,master=None):
         
-        self.root = root
+        self.master = master
 
         #Frame principal
         self.main = Frame(master,background='#040f23')
@@ -83,14 +83,12 @@ class menu():
         self.itemsMenu()
         
        # Atribuição de bind para ajuste da janela ao maximizar 
-        self.root.bind('<Configure>',self.windowSize)
+        self.master.bind('<Configure>',self.windowSize)
         
     def itemsMenu(self):
     
         
         sql = ('SELECT patrimonioItem,tipoItem,localItem FROM items')
-        
-        #connection.cursor.execute(sql)
         
         connection.consultBD(sql)
         result = connection.result
@@ -112,7 +110,7 @@ class menu():
             
             sqlSearch = ('SELECT patrimonioItem,tipoItem,localItem FROM items WHERE patrimonioItem = %s')
             
-            connection.cursor.execute(sqlSearch,itemValue)
+            connection.cursor.execute(sqlSearch,(itemValue,))
             resultSearch = connection.cursor.fetchall()
             
             print(resultSearch)
@@ -189,18 +187,18 @@ class menu():
         
         
         
-root = Tk()
-root.config(background='#040f23')
-root.title('Sistema de gerenciamento de estoque')
-root.maxsize(700,800)
-root.geometry('600x300')
-root.minsize(300,300)
-imgOpen = Image.open('img\logo.jpg')
-imgOpen = imgOpen.resize((300,300))
-img = ImageTk.PhotoImage(imgOpen)
-root.wm_iconphoto(FALSE,img)
-menu(root)
-root.mainloop()
+# root = Tk()
+# root.config(background='#040f23')
+# root.title('Sistema de gerenciamento de estoque')
+# root.maxsize(700,800)
+# root.geometry('600x300')
+# root.minsize(300,300)
+# imgOpen = Image.open('img\logo.jpg')
+# imgOpen = imgOpen.resize((300,300))
+# img = ImageTk.PhotoImage(imgOpen)
+# root.wm_iconphoto(FALSE,img)
+# menu(root)
+# root.mainloop()
         
         
 
