@@ -6,6 +6,7 @@ import awesometkinter as atk
 from tkinter import messagebox
 import mysql.connector
 from conexaobd import connectionDB
+from menu import menu
 class login():
     
     def __init__(self,master=None):
@@ -56,7 +57,7 @@ class login():
         
         try:
             
-            connection = connectionDB('estoque','')
+            connection = connectionDB('estoque','Vini@_2003')
             connection.connectDB()
             
             userBD = ('SELECT loginUser,passwordUser FROM users WHERE loginUser = %s AND passwordUser = %s')
@@ -67,23 +68,24 @@ class login():
             
             if len(result) > 0:
                         
-                self.userSigned = TRUE
+                self.userSigned = True
                     
-            if self.userSigned == TRUE:
+            if self.userSigned == True:
                 print('Usuário logado')
                 root.destroy()
                 
             else:
                 messagebox.showerror('Login','Usuário ou senha incorreta')
             
-        except:
+        except Exception as loginException:
             
-            print('Não foi possível verificar o login')
+            print(f'Não foi possível verificar o login: {loginException}')
     
     #Retorno para verificação se o usuário conseguiu ou não logar no app
     
     def signedOrNot(self):
         
+        print('A:',self.userSigned)
         return self.userSigned
             
 

@@ -13,7 +13,7 @@ from removeItem import removeItem
 from conexaobd import connectionDB
 
 
-connection = connectionDB('estoque','')
+connection = connectionDB('estoque','Vini@_2003')
 connection.connectDB()
 
 
