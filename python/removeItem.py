@@ -104,6 +104,8 @@ class removeItem(Toplevel):
             
             self.connection.commitBD()
             
+            return True
+            
             self.textStringID.set('')
             self.textStringItem.set('')
             self.textStringLocal.set('')

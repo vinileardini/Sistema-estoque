@@ -9,7 +9,9 @@ from conexaobd import connectionDB
 
 class newItem(Toplevel):
     
-    def __init__(self,master=None):
+    def __init__(self,master=None,update=None):
+        
+        self.updateMenu = update
         
         self.newItemWindow = ttk.Toplevel()
         imgIcon = Image.open('img\\PC.png')
@@ -69,17 +71,28 @@ class newItem(Toplevel):
                 values = (patrimonioItem,nomeItem,localItem)
                 connection.cursor.execute(sql,values)
                 
-                connection.commitBD()
+                connection.commitBD
                 
-                if connection.commitBD() == True:
+                if connection.commitBD():
                 
                     print(connection.cursor.rowcount,'rows alterados')
                     messagebox.showinfo(f'Item adicionado',f'O item {self.itemInput.get()} foi adicionado com sucesso')
+                    
+                    try:
+                        print('update')
+                        self.updateMenu
+                        self.updateMenu()
+                    except:
+                        print('menu não foi atualizado')    
+                    
+                    self.newItemWindow.destroy()
                 
-                # Deleta as informações nos entrys
-                self.itemInput.delete(0,'end')
-                self.patrimonioInput.delete(0,'end')
-                self.localInput.delete(0,'end')
+                else:
+                    
+                    # Deleta as informações nos entrys
+                    self.itemInput.delete(0,'end')
+                    self.patrimonioInput.delete(0,'end')
+                    self.localInput.delete(0,'end')
 
         except:
             messagebox.showerror('Erro','Não foi possível adicionar o item')
@@ -100,6 +113,8 @@ class newItem(Toplevel):
             self.patrimonioInput.delete(0,'end')
             self.localInput.delete(0,'end')
             
+
+        
     
         
 

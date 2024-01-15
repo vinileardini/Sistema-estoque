@@ -86,7 +86,7 @@ class menu():
         self.master.bind('<Configure>',self.windowSize)
         
     def itemsMenu(self):
-    
+        
         
         sql = ('SELECT patrimonioItem,tipoItem,localItem FROM items')
         
@@ -96,10 +96,11 @@ class menu():
         for item in result:
             
             self.menu.insert('',0,values=(item[0],item[2],item[1]))
+    
         
         
     def searchItem(self):
-       
+         
         try: 
         
             #Recebe o valor inserido no campo de entrada de pesquisa de item
@@ -154,7 +155,9 @@ class menu():
         
         if option == options[0]:
             
-            newItem()
+            addItem = newItem(update=self.updateMenu)
+                
+                #self.updateMenu()
         
         elif option == options[1]:
             
@@ -162,8 +165,35 @@ class menu():
         
         else:
             
-            removeItem()
+            excludeOption = removeItem()
         
+        
+    # Atualiza o menu com os novos itens
+        
+    def updateMenu(self):
+        
+        # Deleta os itens existentes
+        items = self.menu.get_children()
+        
+        if len(items) > 0:
+        
+            for item in items:
+                
+                self.menu.delete(item)
+        
+        # Realiza a busca e insere os itens na treeview
+        connection.cursor.execute('SELECT patrimonioItem,tipoItem,localItem from items')
+        resultItems = connection.cursor.fetchall()
+            
+        for insertItem in resultItems:
+            print(insertItem[0],insertItem[1],insertItem[2])
+            self.menu.insert('',0,values=(insertItem[0],insertItem[2],insertItem[1]))
+                
+        else:
+            pass
+        
+        print('update menu')
+            
         
     #Funções para o funcionamento do placeholder na entry de pesquisa de item
     
