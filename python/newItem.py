@@ -56,6 +56,7 @@ class newItem(Toplevel):
             connection = connectionDB('estoque','')
             connection.connectDB()
             
+            
             itemSearch = ('SELECT patrimonioItem FROM items')
             connection.cursor.execute(itemSearch)
             result = connection.cursor.fetchall()
@@ -67,25 +68,26 @@ class newItem(Toplevel):
                 self.newItemWindow.destroy()
 
             else:
-                sql = ('INSERT INTO items(patrimonioItem,tipoItem,localItem) VALUES (%s,%s,%s)')
                 values = (patrimonioItem,nomeItem,localItem)
+                sql = ('INSERT INTO items(patrimonioItem,tipoItem,localItem) VALUES (%s,%s,%s)')
+                
                 connection.cursor.execute(sql,values)
                 
-                connection.commitBD
+                connection.connection.commit()
                 
-                if connection.commitBD():
+                if connection.commitBD:
                 
                     print(connection.cursor.rowcount,'rows alterados')
                     messagebox.showinfo(f'Item adicionado',f'O item {self.itemInput.get()} foi adicionado com sucesso')
                     
                     try:
                         print('update')
-                        self.updateMenu
-                        self.updateMenu()
+                        self.newItemWindow.destroy()
+                        self.newItemWindow.after(0,self.updateMenu())
+                        connection.disconnectDB()
                     except:
-                        print('menu não foi atualizado')    
+                        print('Menu não atualizou')    
                     
-                    self.newItemWindow.destroy()
                 
                 else:
                     
@@ -103,7 +105,7 @@ class newItem(Toplevel):
     
     def cancelAdd(self):
         try:
-            messagebox.showinfo(f'Cancelado','Foi cancelada a adição do item')
+            messagebox.showinfo('Cancelado','Foi cancelada a adição do item')
             self.itemInput.delete(0,'end')
             self.patrimonioInput.delete(0,'end')
             self.localInput.delete(0,'end')
@@ -113,9 +115,6 @@ class newItem(Toplevel):
             self.patrimonioInput.delete(0,'end')
             self.localInput.delete(0,'end')
             
-
-        
-    
         
 
 

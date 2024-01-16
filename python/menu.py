@@ -13,8 +13,6 @@ from removeItem import removeItem
 from conexaobd import connectionDB
 
 
-connection = connectionDB('estoque','')
-connection.connectDB()
 
 
 class menu():
@@ -88,18 +86,32 @@ class menu():
     def itemsMenu(self):
         
         
-        sql = ('SELECT patrimonioItem,tipoItem,localItem FROM items')
+        connection = connectionDB('estoque','')
+        connection.connectDB()
         
-        connection.consultBD(sql)
-        result = connection.result
+        try:
         
-        for item in result:
+            sql = ('SELECT patrimonioItem,tipoItem,localItem FROM items')
             
-            self.menu.insert('',0,values=(item[0],item[2],item[1]))
+            connection.consultBD(sql)
+            
+            result = connection.result
+            
+            for item in result:
+                
+                self.menu.insert('',0,values=(item[0],item[2],item[1]))
+        except:
+            print('A inserção de itens na treeview deu errado')
+    
+        connection.disconnectDB()
     
         
         
     def searchItem(self):
+        
+        
+        connection = connectionDB('estoque','Vini@_2003')
+        connection.connectDB()
          
         try: 
         
@@ -123,6 +135,7 @@ class menu():
             for item in result:
                 
                 self.menu.delete(item)
+                
         
         except:
             
@@ -143,9 +156,12 @@ class menu():
             for itemDisplay in allItems:
                 
                 self.menu.insert('',0,values=(itemDisplay[0],itemDisplay[2],itemDisplay[1]))
+        
+        connection.disconnectDB()
+        
+        
                 
-                
-            
+
             
     def optionSelected(self,event):
         
@@ -157,7 +173,6 @@ class menu():
             
             addItem = newItem(update=self.updateMenu)
                 
-                #self.updateMenu()
         
         elif option == options[1]:
             
@@ -172,6 +187,10 @@ class menu():
         
     def updateMenu(self):
         
+        
+        connection = connectionDB('estoque','Vini@_2003')
+        connection.connectDB()
+                
         # Deleta os itens existentes
         items = self.menu.get_children()
         
@@ -182,17 +201,25 @@ class menu():
                 self.menu.delete(item)
         
         # Realiza a busca e insere os itens na treeview
-        connection.cursor.execute('SELECT patrimonioItem,tipoItem,localItem from items')
-        resultItems = connection.cursor.fetchall()
+        if newItem.addNewitem:
+            connection.cursor.execute('SELECT patrimonioItem,tipoItem,localItem from items')
+            resultItems = connection.cursor.fetchall()
             
-        for insertItem in resultItems:
-            print(insertItem[0],insertItem[1],insertItem[2])
-            self.menu.insert('',0,values=(insertItem[0],insertItem[2],insertItem[1]))
+            print('Items:',resultItems)
                 
-        else:
-            pass
+            for insertItem in resultItems:
+                print(insertItem[0],insertItem[1],insertItem[2])
+                self.menu.insert('',0,values=(insertItem[0],insertItem[2],insertItem[1]))
+                    
+            else:
+                pass
+            
+            print('update menu')
         
-        print('update menu')
+        else:
+            print('n atualizou menu')
+
+        connection.disconnectDB()
             
         
     #Funções para o funcionamento do placeholder na entry de pesquisa de item
@@ -216,20 +243,3 @@ class menu():
         self.main.update_idletasks()
         
         
-        
-# root = Tk()
-# root.config(background='#040f23')
-# root.title('Sistema de gerenciamento de estoque')
-# root.maxsize(700,800)
-# root.geometry('600x300')
-# root.minsize(300,300)
-# imgOpen = Image.open('img\logo.jpg')
-# imgOpen = imgOpen.resize((300,300))
-# img = ImageTk.PhotoImage(imgOpen)
-# root.wm_iconphoto(FALSE,img)
-# menu(root)
-# root.mainloop()
-        
-        
-
-
