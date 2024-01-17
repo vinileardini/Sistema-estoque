@@ -79,9 +79,9 @@ class removeItem(Toplevel):
         try:
             item = self.itemInput.get()
             
-            sqlSearch = (f'SELECT patrimonioItem,tipoItem,localItem FROM items WHERE patrimonioItem ={item}')
+            sqlSearch = ('SELECT patrimonioItem,tipoItem,localItem FROM items WHERE patrimonioItem = %s')
             
-            self.connection.cursor.execute(sqlSearch)
+            self.connection.cursor.execute(sqlSearch,(item,))
             result = self.connection.cursor.fetchall()
                 
             self.textStringID.set(result[0][0])

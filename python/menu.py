@@ -110,7 +110,7 @@ class menu():
     def searchItem(self):
         
         
-        connection = connectionDB('estoque','Vini@_2003')
+        connection = connectionDB('estoque','')
         connection.connectDB()
          
         try: 
@@ -188,7 +188,7 @@ class menu():
     def updateMenu(self):
         
         
-        connection = connectionDB('estoque','Vini@_2003')
+        connection = connectionDB('estoque','')
         connection.connectDB()
                 
         # Deleta os itens existentes
