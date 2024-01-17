@@ -180,7 +180,7 @@ class menu():
         
         else:
             
-            excludeOption = removeItem()
+            excludeOption = removeItem(update=self.updateMenu)
         
         
     # Atualiza o menu com os novos itens

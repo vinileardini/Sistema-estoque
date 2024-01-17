@@ -7,17 +7,19 @@ import mysql.connector
 from conexaobd import connectionDB
 class removeItem(Toplevel):
     
-    def __init__(self,master=None):
+    def __init__(self,master=None,update=None):
         
-        removeItemWindow = ttk.Toplevel()
-        removeItemWindow.title('Remoção de item')
+        self.updateMenu = update
+        
+        self.removeItemWindow = ttk.Toplevel()
+        self.removeItemWindow.title('Remoção de item')
         imgIcon = Image.open('img\\PC.png')
         icon = ImageTk.PhotoImage(imgIcon)
-        removeItemWindow.wm_iconphoto(FALSE,icon)
-        removeItemWindow.maxsize(300,500)
-        removeItemWindow.minsize(300,500)
-        removeItemWindow.config(background='#040f23')
-        mainRemoveItem = Frame(removeItemWindow,background='#040f23')
+        self.removeItemWindow.wm_iconphoto(FALSE,icon)
+        self.removeItemWindow.maxsize(300,500)
+        self.removeItemWindow.minsize(300,500)
+        self.removeItemWindow.config(background='#040f23')
+        mainRemoveItem = Frame(self.removeItemWindow,background='#040f23')
         mainRemoveItem.pack()
         labelItem = Label(mainRemoveItem,background='#040f23')
         labelItem.pack(pady=20)
@@ -104,11 +106,17 @@ class removeItem(Toplevel):
             
             self.connection.commitBD()
             
-            return True
+            if self.connection.commitBD:
             
-            self.textStringID.set('')
-            self.textStringItem.set('')
-            self.textStringLocal.set('')
+                self.textStringID.set('')
+                self.textStringItem.set('')
+                self.textStringID.set('')
+                
+                self.removeItemWindow.destroy()
+                self.removeItemWindow.after(0,self.updateMenu())
+                
+            else:
+                print('remove: não atualizou menu')
     
         except:
             messagebox.showerror('Remoção de item','Não foi possível realizar a remoção do item')
