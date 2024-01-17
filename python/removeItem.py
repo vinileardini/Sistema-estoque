@@ -114,6 +114,7 @@ class removeItem(Toplevel):
                 
                 self.removeItemWindow.destroy()
                 self.removeItemWindow.after(0,self.updateMenu())
+                self.connection.disconnectDB()
                 
             else:
                 print('remove: não atualizou menu')

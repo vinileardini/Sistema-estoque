@@ -205,19 +205,17 @@ class menu():
             connection.cursor.execute('SELECT patrimonioItem,tipoItem,localItem from items')
             resultItems = connection.cursor.fetchall()
             
-            print('Items:',resultItems)
                 
             for insertItem in resultItems:
-                print(insertItem[0],insertItem[1],insertItem[2])
                 self.menu.insert('',0,values=(insertItem[0],insertItem[2],insertItem[1]))
                     
             else:
                 pass
             
-            print('update menu')
+            print('Sucessfull treeview update')
         
         else:
-            print('n atualizou menu')
+            print('Unsucessfull treeview update')
 
         connection.disconnectDB()
             
@@ -235,6 +233,26 @@ class menu():
             pass
         else:
             self.entrySearchItem.insert(0,'Insira o id do item a ser buscado:')
+            
+            if len(self.menu.get_children()) > 1:
+                pass
+            else:
+                for treeviewItem in self.menu.get_children():
+                    
+                    self.menu.delete(treeviewItem)
+            
+                connection = connectionDB('estoque','')
+                connection.connectDB()
+                
+                connection.cursor.execute('SELECT patrimonioItem,tipoItem,localItem FROM items')
+                SQLresult = connection.cursor.fetchall()
+                
+                for item in SQLresult:
+                    
+                    self.menu.insert('',0,values=(item[0],item[2],item[1]))
+                
+                connection.disconnectDB()
+            
         
         
     def windowSize(self,event):
