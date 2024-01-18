@@ -10,6 +10,7 @@ from PIL import ImageTk,Image
 #Conexões do app
 from newItem import newItem
 from removeItem import removeItem
+from editItem import editItem
 from conexaobd import connectionDB
 
 
@@ -32,7 +33,7 @@ class menu():
         #Frame das opções de menu
         self.selectionMenu = Frame(self.main,background='#040f23')
         self.selectionMenu.pack()
-        options = ["Adicionar Item","Pesquisar Item","Remover Item"]
+        options = ["Adicionar Item","Pesquisar Item","Remover Item","Editar Item"]
         self.dropdownMenu = ttk.Combobox(self.selectionMenu,width=30)
         self.dropdownMenu['values'] = options
         self.dropdownMenu['state'] = 'readonly'
@@ -167,20 +168,25 @@ class menu():
         
         option = self.dropdownMenu.get()
         
-        options = ["Adicionar Item","Pesquisar Item","Remover Item"]
+        options = ["Adicionar Item","Pesquisar Item","Remover Item","Editar Item"]
+
         
         if option == options[0]:
             
-            addItem = newItem(update=self.updateMenu)
+            addItem = newItem(update=self.updateMenu,setDropdown=self.setDropdownMenu)
                 
         
         elif option == options[1]:
             
             pass
         
+        elif option == options[2]:
+            
+            excludeOption = removeItem(update=self.updateMenu,setDropdown=self.setDropdownMenu)
+            
         else:
             
-            excludeOption = removeItem(update=self.updateMenu)
+            editOption = editItem(update=self.updateMenu,setDropdownMenu=self.setDropdownMenu)
         
         
     # Atualiza o menu com os novos itens
@@ -254,10 +260,16 @@ class menu():
                 connection.disconnectDB()
             
         
-        
+    # Altera o tamanho da treeview ao maximizar a janela
     def windowSize(self,event):
         
         self.menu.config(height=28)
         self.main.update_idletasks()
         
+     
+    # Seleciona a opção de pesquisar item do dropdowmenu
+    def setDropdownMenu(self):
         
+        value = "Pesquisar Item"
+        
+        self.dropdownMenu.set(value)

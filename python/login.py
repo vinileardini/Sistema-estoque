@@ -101,7 +101,7 @@ class login():
         root_menu.maxsize(700,800)
         root_menu.geometry('600x300')
         root_menu.minsize(300,300)
-        imgOpen = Image.open('img\logo.jpg')
+        imgOpen = Image.open('img\cpu.png')
         imgOpen = imgOpen.resize((300,300))
         img = ImageTk.PhotoImage(imgOpen)
         root_menu.wm_iconphoto(FALSE,img)

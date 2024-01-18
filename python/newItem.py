@@ -9,9 +9,10 @@ from conexaobd import connectionDB
 
 class newItem(Toplevel):
     
-    def __init__(self,master=None,update=None):
+    def __init__(self,master=None,update=None,setDropdown=None):
         
         self.updateMenu = update
+        self.setSearch = setDropdown
         
         self.newItemWindow = ttk.Toplevel()
         imgIcon = Image.open('img\\PC.png')
@@ -34,7 +35,7 @@ class newItem(Toplevel):
         patrimonioField = Label(labelPatrimonio,text="Patrimonio:",background='#040f23',foreground='#ffffff')
         patrimonioField.pack(pady=20,side=LEFT)
         self.patrimonioInput = Entry(labelPatrimonio,width=30)
-        self.patrimonioInput.pack(pady=20)
+        self.patrimonioInput.pack(pady=20)          
         labelLocal = Label(mainItem,background='#040f23')
         labelLocal.pack(pady=20)
         localField = Label(labelLocal,text="Local:",background='#040f23',foreground='#ffffff')
@@ -84,6 +85,7 @@ class newItem(Toplevel):
                         print('update')
                         self.newItemWindow.destroy()
                         self.newItemWindow.after(0,self.updateMenu())
+                        self.newItemWindow.after(0,self.setSearch())
                         connection.disconnectDB()
                     except:
                         print('Menu não atualizou')    

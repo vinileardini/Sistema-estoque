@@ -7,9 +7,10 @@ import mysql.connector
 from conexaobd import connectionDB
 class removeItem(Toplevel):
     
-    def __init__(self,master=None,update=None):
+    def __init__(self,master=None,update=None,setDropdown=None):
         
         self.updateMenu = update
+        self.setSearch = setDropdown
         
         self.removeItemWindow = ttk.Toplevel()
         self.removeItemWindow.title('Remoção de item')
@@ -114,6 +115,7 @@ class removeItem(Toplevel):
                 
                 self.removeItemWindow.destroy()
                 self.removeItemWindow.after(0,self.updateMenu())
+                self.removeItemWindow.after(0,self.setSearch())
                 self.connection.disconnectDB()
                 
             else:
