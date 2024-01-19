@@ -25,14 +25,16 @@ class editItem(Toplevel):
         
         # pesquisa do item 
         labelSearchId = Label(mainEdit,background='#040f23')
-        labelSearchId.pack(pady=10)
-        idSearchField = Label(labelSearchId,background='#040f23',text='ID:',foreground='#ffffff')
+        labelSearchId.pack(pady=25)
+        idSearchField = Label(labelSearchId,background='#040f23',foreground='#ffffff')
         idSearchField.pack(side=LEFT,padx=10)
-        self.textEntryId = StringVar()
-        self.idEntry = Entry(labelSearchId,textvariable=self.textEntryId)
+        self.idEntry = Entry(labelSearchId,width=38)
+        self.idEntry.insert(0,'Insira o id do item:')
+        self.idEntry.bind('<Leave>',self.placeholderID)
+        self.idEntry.bind('<Button-1>',self.excludePlaceholder)
         self.idEntry.pack(side=LEFT)
         searchImage = PhotoImage(file='img/lupa.png')
-        searchImage = searchImage.subsample(18,18)
+        searchImage = searchImage.subsample(30,30)
         self.buttonSearchID = Button(labelSearchId,background='#040f23',image=searchImage,command=lambda:self.searchItem())
         self.buttonSearchID.image = searchImage
         self.buttonSearchID.pack(side=RIGHT,padx=5)
@@ -44,41 +46,44 @@ class editItem(Toplevel):
         
         # informações do item
         labelId = Label(mainEdit,background='#040f23')
-        labelId.pack(pady=10)
+        labelId.pack(pady=20)
         idField = Label(labelId,background='#040f23',foreground='#ffffff',text='Id:')
-        idField.pack(side=LEFT,padx=10)
-        self.idEntry = Entry(labelId,background='#040f23',foreground='#ffffff')
-        self.idEntry.pack(side=LEFT)
+        idField.pack(side=LEFT,padx=16)
+        self.textEntryId = StringVar()
+        self.idEntryInfo = Entry(labelId,background='#040f23',foreground='#ffffff',textvariable=self.textEntryId)
+        self.idEntryInfo.pack(side=RIGHT)
         labelLocal = Label(mainEdit,background='#040f23')
-        labelLocal.pack(pady=10)
+        labelLocal.pack(pady=20)
         localField = Label(labelLocal,background='#040f23',foreground='#ffffff',text='Local:')
-        localField.pack(side=LEFT,padx=10)
+        localField.pack(side=LEFT,padx=8)
         self.textEntryLocal = StringVar()
         self.localEntry = Entry(labelLocal,background='#040f23',foreground='#ffffff',textvariable=self.textEntryLocal)
-        self.localEntry.pack(side=LEFT)
+        self.localEntry.pack(side=RIGHT)
         labelItem = Label(mainEdit,background='#040f23')
-        labelItem.pack(pady=10)
+        labelItem.pack(pady=20)
         itemField = Label(labelItem,background='#040f23',foreground='#ffffff',text='Item:')
         itemField.pack(side=LEFT,padx=10)
         self.textEntryItem = StringVar()
         self.itemEntry = Entry(labelItem,background='#040f23',foreground='#ffffff',textvariable=self.textEntryItem)
-        self.itemEntry.pack(side=LEFT)
+        self.itemEntry.pack(side=RIGHT)
         buttonsLabel = Label(mainEdit,background='#040f23')
         buttonsLabel.pack(pady=5)
         buttonConfirm = Button(buttonsLabel,background='#02c202',text='✔ Confirmar')
-        buttonConfirm.pack(side=LEFT,padx=10)
+        buttonConfirm.pack(side=LEFT,padx=15)
         buttonCancel = Button(buttonsLabel,background='#eb1212',text='❌ Cancelar')
-        buttonCancel.pack(side=LEFT)
+        buttonCancel.pack()
         
+
     
+    def excludePlaceholder(self,*args):
+
+        self.idEntry.delete(0,END)
     
-    def placeholderID(self):
-        
-        if self.itemEntry.get() == '':
-            self.textEntryId.set('Insira o id do item:')
-        
-        else:
+    def placeholderID(self,*args):
+        if self.idEntry.get() != '':
             pass
+        else:
+            self.idEntry.insert(0,'Insira o ID do item:')
     
     def searchItem(self):
         
