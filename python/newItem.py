@@ -82,13 +82,12 @@ class newItem(Toplevel):
                     messagebox.showinfo(f'Item adicionado',f'O item {self.itemInput.get()} foi adicionado com sucesso')
                     
                     try:
-                        print('update')
                         self.newItemWindow.destroy()
                         self.newItemWindow.after(0,self.updateMenu())
                         self.newItemWindow.after(0,self.setSearch())
                         connection.disconnectDB()
-                    except:
-                        print('Menu não atualizou')    
+                    except Exception as error:
+                        print(f'Menu não atualizou, erro: {error}')    
                     
                 
                 else:

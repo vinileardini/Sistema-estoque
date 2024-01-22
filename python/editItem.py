@@ -11,6 +11,8 @@ class editItem(Toplevel):
     
     def __init__(self,master=None,update=None,setDropdownMenu=None):
         
+        self.updateMenu = update
+        self.dropdown = setDropdownMenu
         
         self.editItemWindow = ttk.Toplevel()
         imgIcon = Image.open('img\\PC.png')
@@ -47,11 +49,6 @@ class editItem(Toplevel):
         # informações do item
         labelId = Label(mainEdit,background='#040f23')
         labelId.pack(pady=20)
-        idField = Label(labelId,background='#040f23',foreground='#ffffff',text='Id:')
-        idField.pack(side=LEFT,padx=16)
-        self.textEntryId = StringVar()
-        self.idEntryInfo = Entry(labelId,background='#040f23',foreground='#ffffff',textvariable=self.textEntryId)
-        self.idEntryInfo.pack(side=RIGHT)
         labelLocal = Label(mainEdit,background='#040f23')
         labelLocal.pack(pady=20)
         localField = Label(labelLocal,background='#040f23',foreground='#ffffff',text='Local:')
@@ -68,10 +65,14 @@ class editItem(Toplevel):
         self.itemEntry.pack(side=RIGHT)
         buttonsLabel = Label(mainEdit,background='#040f23')
         buttonsLabel.pack(pady=5)
-        buttonConfirm = Button(buttonsLabel,background='#02c202',text='✔ Confirmar')
+        buttonConfirm = Button(buttonsLabel,background='#02c202',text='✔ Confirmar',command=lambda:self.alterItem())
         buttonConfirm.pack(side=LEFT,padx=15)
         buttonCancel = Button(buttonsLabel,background='#eb1212',text='❌ Cancelar')
         buttonCancel.pack()
+        
+        self.idItem = None
+        self.tipoItem = None
+        self.localItem = None
         
 
     
@@ -100,6 +101,10 @@ class editItem(Toplevel):
                 connection.cursor.execute(sql,(value,))
                 result = connection.cursor.fetchall()
                 
+                self.idItem = result[0][0]
+                self.tipoItem = result[0][1]
+                self.localItem = result[0][2]
+                
                 self.textEntryLocal.set(result[0][2])
                 self.textEntryItem.set(result[0][1])
             
@@ -111,6 +116,43 @@ class editItem(Toplevel):
         
         except:
             messagebox.showerror('Edição de item','Não existe item com esse id')
+            
+    def alterItem(self):
+        
+        try:
+        
+            connection = connectionDB('estoque','')
+            connection.connectDB()
+            
+            if self.tipoItem != self.textEntryItem.get() or self.localItem != self.textEntryLocal.get():
+                
+                print('entrou')
+                
+                sql = ('UPDATE items SET tipoItem = %s, localItem = %s WHERE patrimonioItem = %s')
+                
+                print('id:',self.idItem)
+                
+                connection.cursor.execute(sql,(self.textEntryItem.get(),self.textEntryLocal.get(),self.idItem))
+                connection.connection.commit()
+                
+                if connection.commitBD:
+                    self.editItemWindow.destroy()
+                    self.editItemWindow.after(0,self.updateMenu())
+                    self.editItemWindow.after(0,self.dropdown())
+                    print('Alteração realizada')
+
+                else:
+                    print('Não foi possível alterar o item')
+            
+            else:
+                print('n entrou')
+                
+        except Exception as e:
+            print(f'Não foi possível realizar a edição do item: {e}')
+            connection.connection.rollback()
+        
+        connection.disconnectDB()
+        
     
     def resetSearch(self):
         
