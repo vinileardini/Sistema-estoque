@@ -14,7 +14,7 @@ class removeItem(Toplevel):
         
         self.removeItemWindow = ttk.Toplevel()
         self.removeItemWindow.title('Remoção de item')
-        imgIcon = Image.open('img\\PC.png')
+        imgIcon = Image.open('img\\cpu.png')
         icon = ImageTk.PhotoImage(imgIcon)
         self.removeItemWindow.wm_iconphoto(FALSE,icon)
         self.removeItemWindow.maxsize(300,500)
@@ -77,7 +77,7 @@ class removeItem(Toplevel):
         self.connection.connectDB()
         
         
-    
+    # Pesquisa o item no banco de dados
     def searchItem(self):
         try:
             item = self.itemInput.get()
@@ -94,8 +94,8 @@ class removeItem(Toplevel):
             self.itemInput.delete(0,'end')
         except:
             messagebox.showerror('Erro','Não existe item com essa identificação')
-        
-    
+            
+    # Confirmação de remoção, remove o item do banco de dados
     def confirmRemove(self):
         
         try:
@@ -130,7 +130,7 @@ class removeItem(Toplevel):
             
            
         
-    
+    # Cancelamento de remoção, limpa os campos de dados
     def cancelRemove(self):
         
         try:

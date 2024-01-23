@@ -25,6 +25,8 @@ class connectionDB():
         
         return self.cursor
     
+    # Realiza o commit no banco de dados
+    
     def commitBD(self):
         try:
             self.connection.commit()
@@ -33,7 +35,9 @@ class connectionDB():
         except:
             print('Não foi possível realizar o commit')
             return False
-        
+    
+    
+    # Realiza a conexão com o banco de dados
         
     def connectDB(self):
         try:
@@ -49,12 +53,16 @@ class connectionDB():
                 print('Usuário ou senha inválida')
             else:
                 print(error)
+                
+    # Desconecta do banco de dados
     
     def disconnectDB(self):
        if self.connection:
            self.connection.close()
            print('Conexão com o BD fechada')
-                
+
+    # Realiza consultas no banco de dados
+    
     def consultBD(self,command):
         try:
             self.cursor.execute(command)

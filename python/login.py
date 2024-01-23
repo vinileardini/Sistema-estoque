@@ -59,7 +59,7 @@ class login():
         
         try:
             
-            connection = connectionDB('estoque','Vini@_2003')
+            connection = connectionDB('estoque','')
             connection.connectDB()
             
             userBD = ('SELECT loginUser,passwordUser FROM users WHERE loginUser = %s AND passwordUser = %s')

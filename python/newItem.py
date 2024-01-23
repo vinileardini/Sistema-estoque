@@ -15,7 +15,7 @@ class newItem(Toplevel):
         self.setSearch = setDropdown
         
         self.newItemWindow = ttk.Toplevel()
-        imgIcon = Image.open('img\\PC.png')
+        imgIcon = Image.open('img\\cpu.png')
         icon = ImageTk.PhotoImage(imgIcon)
         self.newItemWindow.wm_iconphoto(False,icon)
         self.newItemWindow.title('Adição de item')
@@ -103,7 +103,9 @@ class newItem(Toplevel):
             self.itemInput.delete(0,'end')
             self.patrimonioInput.delete(0,'end')
             self.localInput.delete(0,'end')
-    
+            
+        
+    # Cancelamento de adição, limpa os campos dos dados do item
     def cancelAdd(self):
         try:
             messagebox.showinfo('Cancelado','Foi cancelada a adição do item')

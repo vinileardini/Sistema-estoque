@@ -15,7 +15,7 @@ class editItem(Toplevel):
         self.dropdown = setDropdownMenu
         
         self.editItemWindow = ttk.Toplevel()
-        imgIcon = Image.open('img\\PC.png')
+        imgIcon = Image.open('img\\cpu.png')
         icon = ImageTk.PhotoImage(imgIcon)
         self.editItemWindow.wm_iconphoto(False,icon)
         self.editItemWindow.title('Edição de item')
@@ -67,24 +67,28 @@ class editItem(Toplevel):
         buttonsLabel.pack(pady=5)
         buttonConfirm = Button(buttonsLabel,background='#02c202',text='✔ Confirmar',command=lambda:self.alterItem())
         buttonConfirm.pack(side=LEFT,padx=15)
-        buttonCancel = Button(buttonsLabel,background='#eb1212',text='❌ Cancelar')
+        buttonCancel = Button(buttonsLabel,background='#eb1212',text='❌ Cancelar',command=lambda:self.resetSearch())
         buttonCancel.pack()
         
         self.idItem = None
         self.tipoItem = None
         self.localItem = None
         
-
+    # Exclui o placeholder do entry de ID
     
     def excludePlaceholder(self,*args):
 
         self.idEntry.delete(0,END)
+        
+    # Adiciona o placeholder no entry de ID
     
     def placeholderID(self,*args):
         if self.idEntry.get() != '':
             pass
         else:
             self.idEntry.insert(0,'Insira o ID do item:')
+            
+    # Realiza a busca de um determinado ID no banco de dados
     
     def searchItem(self):
         
@@ -116,6 +120,9 @@ class editItem(Toplevel):
         
         except:
             messagebox.showerror('Edição de item','Não existe item com esse id')
+    
+    
+    # Realiza a alteração do item no banco de dados
             
     def alterItem(self):
         
@@ -152,13 +159,12 @@ class editItem(Toplevel):
             connection.connection.rollback()
         
         connection.disconnectDB()
-        
+    
+    
     
     def resetSearch(self):
         
         try:
-        
-            self.textEntryId.set('')
             self.textEntryLocal.set('')
             self.textEntryItem.set('')
         except:
